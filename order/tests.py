@@ -35,7 +35,7 @@ class OrderModelTest(TestCase):
 
     def test_order_category(self):
         order = Order.objects.get(id=1)
-        self.assertEqual(order.category.name, 'Test Category')
+        self.assertEqual(order.category, 'Test Category')
 
     def test_order_created_at(self):
         order = Order.objects.get(id=1)

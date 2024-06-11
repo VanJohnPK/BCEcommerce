@@ -16,19 +16,7 @@ class OrderDetailView(DetailView):
     template_name = 'order_detail.html'
     context_object_name = 'order'
 
-
-# http://localhost:8000/search/?phone_number=12345678910
-# def search_order_by_phone(request):
-#     phone_number = request.GET.get('phone_number')
-#     if phone_number:
-#         orders = Order.objects.filter(poster_phone_number=phone_number)
-#     else:
-#         orders = Order.objects.none()  # 如果没有提供电话号码，返回空查询集
-    
-#     return render(request, 'order_list.html', {'orders': orders})
-
 from django.db.models import Q
-
 # http://localhost:8000/search/?query=12345678910
 def search_order(request):
     query = request.GET.get('query')

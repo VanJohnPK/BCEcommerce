@@ -5,7 +5,7 @@ from django.core.validators import RegexValidator
 
 phone_regex = RegexValidator(
     regex=r'^1\d{10}$',
-    message="Phone number must be 10 digits long and start with '1'."
+    message="Phone number must be 11 digits long and start with '1'."
 )
 
 class Order(models.Model):

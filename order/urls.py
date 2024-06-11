@@ -11,7 +11,6 @@ urlpatterns = [
     
     
     path('orders/<int:pk>/', OrderDetailView.as_view(), name='order_detail'),
-    # path('search/', views.search_order_by_phone, name='search_order_by_phone'),
     path('search/', views.search_order, name='search_order'),
     path('orders/<int:order_id>/mark_accepted/', views.mark_order_as_accepted, name='mark_order_as_accepted'),
     path('orders/pending/', views.list_orders_pending_approval, name='list_orders_pending_approval'),
