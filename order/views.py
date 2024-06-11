@@ -23,13 +23,30 @@ class OrderDetailView(DetailView):
 
 
 # http://localhost:8000/search/?phone_number=12345678910
-def search_order_by_phone(request):
-    phone_number = request.GET.get('phone_number')
-    if phone_number:
-        orders = Order.objects.filter(poster_phone_number=phone_number)
-    else:
-        orders = Order.objects.none()  # 如果没有提供电话号码，返回空查询集
+# def search_order_by_phone(request):
+#     phone_number = request.GET.get('phone_number')
+#     if phone_number:
+#         orders = Order.objects.filter(poster_phone_number=phone_number)
+#     else:
+#         orders = Order.objects.none()  # 如果没有提供电话号码，返回空查询集
     
+#     return render(request, 'order_list.html', {'orders': orders})
+# http://localhost:8000/search/?query=12345678910
+from django.db.models import Q
+def search_order(request):
+    query = request.GET.get('query')
+    orders = []
+
+    if query:
+        # 在标题、描述和类别名称中进行查询
+        orders = Order.objects.filter(
+            Q(title__icontains=query) |
+            Q(price__icontains=query) |
+            Q(description__icontains=query) |
+            Q(category__name__icontains=query) |
+            Q(poster_phone_number__icontains=query) 
+        ).distinct()
+
     return render(request, 'order_list.html', {'orders': orders})
 
 from django.shortcuts import get_object_or_404
