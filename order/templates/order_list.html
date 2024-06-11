@@ -9,7 +9,9 @@
     <h1>Order List</h1>
     <ul>
         {% for order in orders %}
-            <li>{{ order.title }} - {{ order.price }}</li>
+            <li>{{ order.title }} - {{ order.price }} - {{order.poster_phone_number}} - {{order.category}}</li>
+        {% empty %}
+            <li>No orders found.</li>
         {% endfor %}
     </ul>
 </body>

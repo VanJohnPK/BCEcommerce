@@ -1,7 +1,12 @@
 from django.db import models
 from django.core.validators import MinValueValidator
 from decimal import Decimal
+from django.core.validators import RegexValidator
 
+phone_regex = RegexValidator(
+    regex=r'^1\d{10}$',
+    message="Phone number must be 10 digits long and start with '1'."
+)
 
 class Order(models.Model):
     """
@@ -12,6 +17,9 @@ class Order(models.Model):
     title = models.CharField(max_length=100)
     price = models.DecimalField(
         max_digits=10, decimal_places=2, validators=[MinValueValidator(Decimal("0"))]
+    )
+    poster_phone_number = models.CharField(
+        validators=[phone_regex], max_length=11
     )
     is_digital = models.BooleanField(default=False)
     description = models.TextField(blank=True)
