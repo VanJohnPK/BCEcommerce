@@ -73,11 +73,13 @@ from .forms import OrderForm
 
 def my_view(request):
     if request.method == 'POST':
+        print("hello world")
         form = OrderForm(request.POST)
         if form.is_valid():
             # Process the form data
             form.save()
             # Redirect or render success page
+            print("data saved")
     else:
         form = OrderForm()
     return render(request, 'post.html', {'form': form})
