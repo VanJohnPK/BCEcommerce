@@ -20,3 +20,8 @@ class OrderDetailView(DetailView):
     model = Order
     template_name = 'order_detail.html'
     context_object_name = 'order'
+
+
+def post(request):
+    form ={"name":"elman"}
+    return render(request, 'post.html', {'form': form})
