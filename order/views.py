@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import ListView, DetailView
-from .models import Order, Category 
+from .models import Order
 
 def hello_world(request):
     return HttpResponse("Hello, world!")
@@ -10,11 +10,6 @@ class OrderListView(ListView):
     model = Order
     template_name = 'order_list.html'  # 指定模板文件的路径，默认使用 app_name/model_name_list.html
     context_object_name = 'orders'  # 设置上下文变量名称，默认为 object_list
-
-class CategoryListView(ListView):
-    model = Category
-    template_name = 'category_list.html'
-    context_object_name = 'categories'
 
 class OrderDetailView(DetailView):
     model = Order
@@ -31,8 +26,10 @@ class OrderDetailView(DetailView):
 #         orders = Order.objects.none()  # 如果没有提供电话号码，返回空查询集
     
 #     return render(request, 'order_list.html', {'orders': orders})
-# http://localhost:8000/search/?query=12345678910
+
 from django.db.models import Q
+
+# http://localhost:8000/search/?query=12345678910
 def search_order(request):
     query = request.GET.get('query')
     orders = []
@@ -41,9 +38,9 @@ def search_order(request):
         # 在标题、描述和类别名称中进行查询
         orders = Order.objects.filter(
             Q(title__icontains=query) |
-            Q(price__icontains=query) |
+            Q(price__iexact=query) |
             Q(description__icontains=query) |
-            Q(category__name__icontains=query) |
+            Q(category__icontains=query) |
             Q(poster_phone_number__icontains=query) 
         ).distinct()
 
