@@ -24,18 +24,10 @@ class Order(models.Model):
     is_accepted = models.BooleanField(default=False)
     is_digital = models.BooleanField(default=False)
     description = models.TextField(blank=True)
-    category = models.ForeignKey(
-        "category", on_delete=models.SET_NULL, null=True, blank=True
-    )
+    category = models.CharField(max_length=50, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.title
 
-
-class Category(models.Model):
-    name = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.name

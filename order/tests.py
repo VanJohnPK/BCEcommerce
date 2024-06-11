@@ -1,6 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-from .models import Order, Category
+from .models import Order
 from decimal import Decimal
 
 
@@ -8,13 +8,12 @@ class OrderModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         # 设置测试数据
-        category = Category.objects.create(name='Test Category')
         Order.objects.create(
             title='Test Order',
             price=Decimal('10.00'),
             is_digital=True,
             description='Test Description',
-            category=category,
+            category='Test Category',
             poster_phone_number='12345678901'
         )
 
@@ -56,23 +55,13 @@ class OrderModelTest(TestCase):
         self.assertEqual(order.poster_phone_number, '12345678901')
 
     def test_order_invalid_phone_number(self):
-        category = Category.objects.get(name='Test Category')
         with self.assertRaises(ValidationError):
             order = Order(
                 title='Invalid Phone Order',
                 price=Decimal('20.00'),
                 is_digital=False,
                 description='Invalid Phone Number',
-                category=category,
+                category='Test Category',
                 poster_phone_number='0987654321'
             )
             order.full_clean()  # This will trigger the validation
-
-class CategoryModelTest(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        Category.objects.create(name='Test Category')
-
-    def test_category_name(self):
-        category = Category.objects.get(id=1)
-        self.assertEqual(category.name, 'Test Category')
