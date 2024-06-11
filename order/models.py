@@ -21,6 +21,7 @@ class Order(models.Model):
     poster_phone_number = models.CharField(
         validators=[phone_regex], max_length=11
     )
+    is_accepted = models.BooleanField(default=False)
     is_digital = models.BooleanField(default=False)
     description = models.TextField(blank=True)
     category = models.ForeignKey(
