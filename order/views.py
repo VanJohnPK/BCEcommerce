@@ -31,3 +31,16 @@ def search_order_by_phone(request):
         orders = Order.objects.none()  # 如果没有提供电话号码，返回空查询集
     
     return render(request, 'order_list.html', {'orders': orders})
+
+from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
+
+def mark_order_as_accepted(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    order.is_accepted = True
+    order.save()
+    return JsonResponse({'status': 'success', 'message': f'Order {order_id} has been marked as accepted.'})
+
+def list_orders_pending_approval(request):
+    pending_orders = Order.objects.filter(is_accepted=False)
+    return render(request, 'order_list.html', {'orders': pending_orders})
