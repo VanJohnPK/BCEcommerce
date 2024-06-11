@@ -31,3 +31,8 @@ def search_order_by_phone(request):
         orders = Order.objects.none()  # 如果没有提供电话号码，返回空查询集
     
     return render(request, 'order_list.html', {'orders': orders})
+
+
+def post(request):
+    form ={"name":"elman"}
+    return render(request, 'post.html', {'form': form})
