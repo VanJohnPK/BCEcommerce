@@ -13,11 +13,15 @@
       margin-bottom: 2.2rem;
       }
 
+      .c-example-divider {
+      margin-bottom: 1rem;
+      }
+
     </style>
     {% endblock %}
 </head>
 <body>
-          
+
 
             <header class="p-3 text-bg-dark">
                 <div class="container">
@@ -47,34 +51,48 @@
               </header>    
   
               <div class="b-example-divider"></div>
-    <div class="container">
-        {% block content %}
-
-        <form>
-            <div class="mb-3">
-              <label for="titleInput" class="form-label">Title</label>
-              <input type="" class="form-control" id="titleInput" aria-describedby="titleHelp">
+              <div class="container">
+                <h2>My Form</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.title.id_for_label }}" class="form-label">Title</label>
+                        {{ form.title }}
+                    </div>
+        
+                    <div class="mb-3">
+                        <label for="{{ form.price.id_for_label }}" class="form-label">Price</label>
+                        {{ form.price }}
+                    </div>
+        
+                    <div class="mb-3">
+                        <label for="{{ form.poster_phone_number.id_for_label }}" class="form-label">Poster Phone Number</label>
+                        {{ form.poster_phone_number }}
+                    </div>
+        
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="{{ form.is_accepted.id_for_label }}" name="{{ form.is_accepted.name }}">
+                        <label class="form-check-label" for="{{ form.is_accepted.id_for_label }}">Is Accepted</label>
+                    </div>
+        
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="{{ form.is_digital.id_for_label }}" name="{{ form.is_digital.name }}">
+                        <label class="form-check-label" for="{{ form.is_digital.id_for_label }}">Is Digital</label>
+                    </div>
+        
+                    <div class="mb-3">
+                        <label for="{{ form.description.id_for_label }}" class="form-label">Description</label>
+                        {{ form.description }}
+                    </div>
+        
+                    <div class="mb-3">
+                        <label for="{{ form.category.id_for_label }}" class="form-label">Category</label>
+                        {{ form.category }}
+                    </div>
+        
+                    <button type="submit" class="btn btn-primary">Submit</button>
             </div>
-
-            <div class="b-example-divider"></div>
-            
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                
-            </div>
-            <div class="b-example-divider"></div>
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                
-            </div>
-            <div class="b-example-divider"></div>
-           
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </form>
-        {% endblock %}
-    </div>
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     {% block extra_js %}{% endblock %}

@@ -34,5 +34,23 @@ def search_order_by_phone(request):
 
 
 def post(request):
+   
     form ={"name":"elman"}
+    return render(request, 'post.html', {'form': form})
+
+
+
+# views.py
+from django.shortcuts import render
+from .forms import OrderForm
+
+def my_view(request):
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            # Process the form data
+            form.save()
+            # Redirect or render success page
+    else:
+        form = OrderForm()
     return render(request, 'post.html', {'form': form})
