@@ -3,10 +3,10 @@ from django.core.validators import MinValueValidator
 from decimal import Decimal
 from django.core.validators import RegexValidator
 
-# phone_regex = RegexValidator(
-#     regex=r'^1\d{10}$',
-#     message="Phone number must be 11 digits long and start with '1'."
-# )
+phone_regex = RegexValidator(
+    regex=r'^1\d{10}$',
+    message="Phone number must be 11 digits long and start with '1'."
+)
 
 class Order(models.Model):
     """
@@ -16,8 +16,12 @@ class Order(models.Model):
 
 
     title = models.CharField(max_length=100)
-    price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(Decimal("0"))])
-    poster_phone_number = models.CharField(max_length=11)
+    price = models.DecimalField(
+        max_digits=10, decimal_places=2, validators=[MinValueValidator(Decimal("0"))]
+    )
+    poster_phone_number = models.CharField(
+        validators=[phone_regex], max_length=11
+    )
     is_accepted = models.BooleanField(default=False)
     is_digital = models.BooleanField(default=False)
     description = models.TextField(blank=True)
@@ -27,3 +31,4 @@ class Order(models.Model):
 
     def __str__(self):
         return self.title
+
