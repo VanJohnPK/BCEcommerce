@@ -81,7 +81,7 @@
                           <h5 class="card-title">{{order.title}}</h5>
                           <p class="card-text">{{order.price}}</p>
                           <p class="card-text">{{order.category}}</p>
-                          <a href="#" class="btn btn-primary">Details</a>
+                          <a href="{% url 'order_detail' order.id %}" class="btn btn-primary">Details</a>
                         </div>
                       </div>
                 </div>
