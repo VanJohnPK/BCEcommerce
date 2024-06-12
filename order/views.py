@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import ListView, DetailView
 from .models import Order
+from django.shortcuts import redirect
 
 def hello_world(request):
     return HttpResponse("Hello, world!")
@@ -46,6 +47,28 @@ def mark_order_as_accepted(request, order_id):
 def list_orders_pending_approval(request):
     pending_orders = Order.objects.filter(is_accepted=False)
     return render(request, 'order_list.html', {'orders': pending_orders})
+
+def delete_order(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    order.delete()
+    return JsonResponse({'status': 'success', 'message': f'Order {order_id} has been deleted.'})
+
+def post(request, order_id=None):
+    if order_id:
+        order = get_object_or_404(Order, id=order_id)
+    else:
+        order = None
+
+    if request.method == 'POST':
+        form = OrderForm(request.POST, instance=order)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'status': 'success', 'message': 'Order saved successfully.'})
+    else:
+        form = OrderForm(instance=order)
+
+    return render(request, 'post.html', {'form': form})
+
 
 
 def post(request):
