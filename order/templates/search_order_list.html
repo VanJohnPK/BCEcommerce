@@ -19,7 +19,6 @@
         .c-example-divider {
             margin-bottom: 1rem;
         }
-
         .logo-container {
             flex: 1;
             display: flex;
@@ -32,15 +31,14 @@
 <body>
 
 
-   
     <header class="p-3 text-bg-dark">
         <div class="container">
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
  
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li><a href="" class="nav-link px-2 text-secondary">Post</a></li>
+                    <li><a href="{% url 'post' %}" class="nav-link px-2 text-white">Post</a></li>
                     <li><a href="{% url 'order_list' %}" class="nav-link px-2 text-white">View</a></li>
-                    <li><a href="{% url 'search_order_list' %}" class="nav-link px-2 text-white">Search</a></li>
+                    <li><a href="{% url 'search_order_list' %}" class="nav-link px-2 text-secondary">Search</a></li>
                 </ul>
                 <div class="logo-container text-center ml-3 pl-3">
                     <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
@@ -56,65 +54,39 @@
             </div>
         </div>
     </header>
-
-
     <div class="b-example-divider"></div>
     <div class="container">
-        <h2 class="pl-5" >Post Your Order</h2>
+        <h2 class="pl-5"> Search your orders by title, description, mobile number </h2>
         <div class="b-example-divider"></div>
-        <form method="post">
-            {% csrf_token %}
-
-            <div class="mb-3">
-                <label for="{{ form.title.id_for_label }}" class="form-label">Title</label>
-                {{ form.title }}
-            </div>
-
-            <div class="b-example-divider"></div>
-
-            <div class="mb-3">
-                <label for="{{ form.price.id_for_label }}" class="form-label">Price</label>
-                {{ form.price }}
-            </div>
-
-            <div class="b-example-divider"></div>
-
-            <div class="mb-3">
-                <label for="{{ form.poster_phone_number.id_for_label }}" class="form-label">Poster Phone Number</label>
-                {{ form.poster_phone_number }}
-            </div>
-
-            <div class="b-example-divider"></div>
-
-            <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="{{ form.is_digital.id_for_label }}"
-                    name="{{ form.is_digital.name }}">
-                <label class="form-check-label" for="{{ form.is_digital.id_for_label }}">Is Digital</label>
-            </div>
-
-            <div class="b-example-divider"></div>
-
-            <div class="mb-3">
-                <label for="{{ form.description.id_for_label }}" class="form-label">Description</label>
-                {{ form.description }}
-            </div>
-
-            <div class="b-example-divider"></div>
-
-            <div class="mb-3">
-                <label for="{{ form.category.id_for_label }}" class="form-label">Category</label>
-                {{ form.category }}
-            </div>
-
-            <div class="b-example-divider"></div>
-            <div class="b-example-divider"></div>
-            <div class="d-grid gap-2 col-6 mx-auto">
-                <button class="btn btn-primary" type="submit">Post</button>
-
-            </div>
-            <div class="b-example-divider"></div>
-            <div class="b-example-divider"></div>
+        <form method="get" action="{% url 'search_order_list' %}" class="d-flex">
+            <input class="form-control me-2" type="search" name="query" placeholder="Search" aria-label="Search">
+            <button class="btn btn-warning" type="submit">Search</button>
         </form>
+    </div>
+
+    <div class="b-example-divider"></div>
+    
+    
+    <div class="container">
+        <div class="row">
+       
+            {% for order in orders %}
+                {% if forloop.counter0|divisibleby:3 and not forloop.first %}
+                    </div><div class="row mt-4">
+                {% endif %}
+                <div class="col-md-4 mb-4">
+                    <div class="card" style="width: 18rem;">
+                        <img src="{% static 'images/1.jpg' %}">
+                        <div class="card-body">
+                          <h5 class="card-title">{{order.title}}</h5>
+                          <p class="card-text">{{order.price}}</p>
+                          <p class="card-text">{{order.category}}</p>
+                          <a href="#" class="btn btn-primary">Details</a>
+                        </div>
+                      </div>
+                </div>
+            {% endfor %}
+        </div>
     </div>
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

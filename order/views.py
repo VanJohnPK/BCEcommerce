@@ -87,7 +87,6 @@ def my_view(request):
         print("hello world")
         form = OrderForm(request.POST)
         if form.is_valid():
-            print("bad!!!!!")
             # Process the form data
             form.save()
             # Redirect or render success page
@@ -95,3 +94,41 @@ def my_view(request):
     else:
         form = OrderForm()
     return render(request, 'post.html', {'form': form})
+
+
+def card_view(request):
+    orders = [
+        {"title": "Item 1", "description": "Description for item 1", "price": "2323", "category":"3434"},
+        {"title": "Item 2", "description": "Description for item 2",  "price": "2323", "category":"3434"},
+        {"title": "Item 3", "description": "Description for item 3",  "price": "2323", "category":"3434"},
+        {"title": "Item 4", "description": "Description for item 4",  "price": "2323", "category":"3434"},
+        {"title": "Item 5", "description": "Description for item 5",  "price": "2323", "category":"3434"},
+        {"title": "Item 6", "description": "Description for item 6",  "price": "2323", "category":"3434"},
+        # Add more items as needed
+    ]
+    return render(request, 'cards.html', {'orders': orders})
+
+
+def detail_view(request,id):
+    order = {"title": "Item 1", "description": "Description for item 1", "price": "2323", "poster_phone_number": "34343", "category":"fdasf"}
+    return render(request, 'postdetail.html', {'order': order} )
+
+
+
+from django.db.models import Q
+# http://localhost:8000/search/?query=12345678910
+def search_order_list(request):
+    query = request.GET.get('query')
+    orders = []
+
+    if query:
+        # 在标题、描述和类别名称中进行查询
+        orders = Order.objects.filter(
+            Q(title__icontains=query) |
+            Q(price__iexact=query) |
+            Q(description__icontains=query) |
+            Q(category__icontains=query) |
+            Q(poster_phone_number__icontains=query) 
+        ).distinct()
+
+    return render(request, 'search_order_list.html', {'orders': orders})
