@@ -64,7 +64,6 @@ def my_view(request):
         print("hello world")
         form = OrderForm(request.POST)
         if form.is_valid():
-            print("bad!!!!!")
             # Process the form data
             form.save()
             # Redirect or render success page
