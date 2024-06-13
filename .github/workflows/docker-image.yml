@@ -15,7 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-      run: docker build --tag tommerce:dtest .
+      run: docker build --tag darkvinci/tommerce:dtest .
     - name: docker login
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
@@ -23,4 +23,4 @@ jobs:
       run: echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
 
     - name: Push Docker image to Docker Hub
-      run: docker push tommerce:dtest
+      run: docker push darkvinci/tommerce:dtest
