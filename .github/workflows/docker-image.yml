@@ -14,8 +14,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - name: Set up environment variables
+      id: vars
+      run: echo "DATE_TAG=$(date +%s)" >> $GITHUB_ENV
     - name: Build the Docker image
-      run: docker build --tag darkvinci/tommerce:$(date +%s) .
+      run: docker build --tag darkvinci/tommerce:${{ env.DATE_TAG }} .
     - name: docker login
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
@@ -23,4 +26,4 @@ jobs:
       run: echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
 
     - name: Push Docker image to Docker Hub
-      run: docker push darkvinci/tommerce:$(date +%s)
+      run: docker push darkvinci/tommerce:${{ env.DATE_TAG }}
