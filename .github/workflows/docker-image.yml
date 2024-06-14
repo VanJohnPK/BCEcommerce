@@ -27,3 +27,4 @@ jobs:
 
     - name: Push Docker image to Docker Hub
       run: docker push darkvinci/tommerce:${{ env.DATE_TAG }}
+
