@@ -34,7 +34,7 @@
  
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a href="{% url 'post' %}" class="nav-link px-2 text-white">Post</a></li>
-                    <li><a href="{% url 'order_list' %}" class="nav-link px-2 text-secondary">View</a></li>
+                    <li><a href="{% url 'list_orders_pending_approval' %}" class="nav-link px-2 text-secondary">View</a></li>
                     <li><a href="{% url 'search_order_list' %}" class="nav-link px-2 text-white">Search</a></li>
                 </ul>
                 <div class="logo-container text-center ml-3 pl-3">
@@ -103,12 +103,12 @@
                                         </div>
                                         <h6 class="text-success">Phone number: {{order.poster_phone_number}}</h6>
                                         <div class="d-flex flex-column mt-4">
-                                            <button data-mdb-button-init data-mdb-ripple-init
-                                                class="btn btn-primary btn-sm" type="button">Bid</button>
-                                            <button data-mdb-button-init data-mdb-ripple-init
+                                            <button id="accept-order-button" data-order-id="{{ order.id }}" data-mdb-button-init data-mdb-ripple-init
+                                                class="btn btn-primary btn-sm" type="button">Accept {{ order.title }}</button>
+                                            <!-- <button data-mdb-button-init data-mdb-ripple-init
                                                 class="btn btn-outline-primary btn-sm mt-2" type="button">
                                                 Add to wishlist
-                                            </button>
+                                            </button> -->
                                         </div>
                                     </div>
                                 </div>
@@ -124,6 +124,51 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+        <script>
+            document.getElementById('accept-order-button').addEventListener('click', function() {
+                let orderId = this.getAttribute('data-order-id');
+                markOrderAsAccepted(orderId);
+            });
+    
+            function markOrderAsAccepted(orderId) {
+                fetch(`/orders/${orderId}/mark_accepted/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken') // 如果你使用了Django的CSRF保护
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        alert(data.message);
+                        // 这里可以添加更多的逻辑，比如刷新页面或更新UI
+                    } else {
+                        alert('Failed to mark order as accepted: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred.');
+                });
+            }
+            // 这是一个获取CSRF token的示例函数，假设你使用了Django的CSRF保护
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    let cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        let cookie = cookies[i].trim();
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+        </script>
 </body>
 
 </html>
